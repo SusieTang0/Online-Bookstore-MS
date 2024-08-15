@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Book</title>
+	<!-- Font Awesome -->
+	<link
+	  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+	  rel="stylesheet"
+	/>
+	<!-- Google Fonts -->
+	<link
+	  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+	  rel="stylesheet"
+	/>
+	<!-- MDB -->
+	<link
+	  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.min.css"
+	  rel="stylesheet"
+	/>
+</head>
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-md navbar-light bg-body-tertiary">
+		<!-- Container wrapper -->
+	  <div class="container-fluid" >
+	    <!-- Toggle button -->
+	    <button
+	      data-mdb-collapse-init
+	      class="navbar-toggler"
+	      type="button"
+	      data-mdb-target="#navbarSupportedContent"
+	      aria-controls="navbarSupportedContent"
+	      aria-expanded="false"
+	      aria-label="Toggle navigation"
+	    >
+	      <i class="fas fa-bars"></i>
+	    </button>
+
+	    <!-- Collapsible wrapper -->
+	    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	      <!-- Navbar brand -->
+	      <a class="navbar-brand mt-2 mt-lg-0" th:href="@{/books/list}" >
+	        <img
+	          src="/images/logo.png"
+	          height="80"
+	          alt="Logo"
+	        />
+	      </a>
+	    </div>
+	    <!-- Collapsible wrapper -->
+
+	    <!-- Right elements -->
+	    <div class="d-flex align-items-center">
+	      <!-- Icon -->
+	    <div sec:authorize="hasRole('CUSTOMER')"><a class="text-reset me-3" href="/books/list">
+	        <i class="fas fa-shopping-cart" ></i>
+			</a></div>
+
+
+	      <!-- Avatar -->
+	      <div class="dropdown">
+	        <a
+	          data-mdb-dropdown-init
+	          class="dropdown-toggle d-flex align-items-center hidden-arrow"
+	          href="#"
+	          id="navbarDropdownMenuAvatar"
+	          role="button"
+	          aria-expanded="false"
+	        >
+	          <img
+	            src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+	            class="rounded-circle"
+	            height="25"
+	            alt="Black and White Portrait of a Man"
+	            loading="lazy"
+	          />
+	        </a>
+	        <ul
+	          class="dropdown-menu dropdown-menu-end"
+	          aria-labelledby="navbarDropdownMenuAvatar"
+	        >
+	          <!--<li>
+	            <a class="dropdown-item" href="#">My profile</a>
+	          </li>-->
+	          <li>
+	            <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+	          </li>
+	        </ul>
+	      </div>
+	    </div>
+	    <!-- Right elements -->
+	  </div>
+	  <!-- Container wrapper -->
+	  
+	</nav>
+	
+	<!-- Navbar -->
+	
+	<main>
+	<div class="container">
+		<div class="row pt-4 d-flex justify-content-center">
+			<div class="col-md-6 m-0 h2" >Purchase Book</div>
+			<div class="col-md-6 m-0 d-flex justify-content-end"><a href="/books/list">&lt;&nbsp;Back to Book List</a></div>
+		</div>
+	    
+		<hr>
+		<h4 class="pt-2">Book Details: </h4>	
+		<div >		
+			<label class=" mb-4 w-25" for="isbn">ISBN:</label>
+			<input class=" mb-4 w-25" type="text" id="isbn" th:value="${book.isbn}" disabled>
+		</div>
+		<div >
+			<label  class=" mb-4 w-25" for="title">Title:</label>
+			<input  class=" mb-4 w-25"type="text" id="title" th:value="${book.title}" disabled>
+		</div>
+		<div>
+			<label class=" mb-4 w-25"for="author">Author:</label>
+		    <input class=" mb-4 w-25" type="text" id="author" th:value="${book.author}" disabled>
+		</div>
+		<div>
+			<label class=" mb-4 w-25" for="price">Price:</label>
+			<input class=" mb-4 w-25" type="number" id="price" th:value="${book.price}" disabled>
+		</div>
+		<div >
+			<label class=" mb-4 w-25" for="quantity">Quantity:</label>
+		    <input class=" mb-4 w-25" type="number" id="quantity" min="1" th:value="1" disabled>
+		</div>
+		<div >
+			<label class=" mb-4 w-25" for="tax">Tax (15%):</label>
+			<input class=" mb-4 w-25" type="number" id="author" th:value="${tax}" disabled>
+		</div>
+		<div >
+			<label class=" mb-4 w-25" for="price">Price:</label>
+			<input class=" mb-4 w-25" type="number" id="price" th:value="${totalPrice}"  disabled>
+		</div>
+		<hr>
+		<form th:action="@{/purchases/success(isbn=${book.isbn})}">
+	       <input type="hidden" name="isbn" th:value="${book.isbn}" />
+		   <h4>Customer Details:</h4>
+   		   <label for="customerName">Name:</label>
+   		   <input type="text" id="customerName" class="form-control mb-4 w-25">
+   		   <label for="customerEmail">Email:</label>
+   		   <input type="email" id="customerEmail" class="form-control mb-4 w-25">
+	       <button type="submit" class="btn btn-info mb-5">Complete Purchase</button>
+	   </form>
+		<!--<form th:action="@{/purchases/save)}" 
+			th:object="purchase" method="post">
+			<input type="hidden" th:field="*{isbn}" th:value="${book.isbn}">
+		   <input type="hidden" th:field="*{quantity}" th:value="${quantity}">
+		   <h4>Customer Details:</h4>
+		   <label for="customerName">Name:</label>
+		   <input type="text" id="customerName" th:field="*{customerName}" class="form-control mb-4 w-25">
+		   <label for="customerEmail">Email:</label>
+		   <input type="email" id="customerEmail" th:field="*{customerEmail}" class="form-control mb-4 w-25">
+		   <button type="submit" class="btn btn-info mb-5">Purchase</button>-->
+	    </form>
+	   
+	</div>	
+	</main>
+	<!-- MDB -->
+		<script
+		  type="text/javascript"
+		  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"
+		></script>
+</body>
+</html>

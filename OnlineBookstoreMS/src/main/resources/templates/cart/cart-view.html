@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.min.css" rel="stylesheet" />
+</head>
+<body>
+
+	<h2>Shopping Cart</h2>
+	        <table class="table table-striped">
+	            <thead>
+	                <tr>
+	                    <th>ISBN</th>
+	                    <th>Title</th>
+	                    <th>Author</th>
+	                    <th>Price</th>
+	                    <th>Quantity</th>
+	                    <th>Total</th>
+	                    <th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr th:each="cartItem : ${cartItems}">
+	                    <td th:text="${cartItem.book.isbn}">ISBN</td>
+	                    <td th:text="${cartItem.book.title}">Title</td>
+	                    <td th:text="${cartItem.book.author}">Author</td>
+	                    <td th:text="${cartItem.book.price}">Price</td>
+	                    <td th:text="${cartItem.quantity}">Quantity</td>
+	                    <td th:text="${cartItem.book.price * cartItem.quantity}">Total</td>
+	                    <td>
+	                        <form th:action="@{/cart/remove/{isbn}(isbn=${cartItem.book.isbn})}" method="post">
+	                            <button type="submit" class="btn btn-danger">Remove</button>
+	                        </form>
+	                    </td>
+	                </tr>
+	            </tbody>
+	        </table>
+	        <div>
+				<h3>Total: <span th:text="${total}"></span></h3>
+	            <form th:action="@{/cart/clear}" method="post">
+	                <button type="submit" class="btn btn-warning">Clear Cart</button>
+	            </form>
+	        </div>
+	        <a href="/books/list" class="btn btn-primary">Continue Shopping</a>
+			
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Book</title>
+</head>
+<body>
+    <h1>Purchase Book</h1>
+    <div th:if="${error}">
+        <p th:text="${error}" style="color:red;"></p>
+    </div>
+    <div>
+        <h2 th:text="${book.title}"></h2>
+        <p>Author: <span th:text="${book.author}"></span></p>
+        <p>Price: <span th:text="${book.price}"></span></p>
+        <p>Tax: <span th:text="${tax}"></span></p>
+        <p>Total Price: <span th:text="${totalPrice}"></span></p>
+        <form th:action="@{/purchase/complete}" method="post">
+            <input type="hidden" name="isbn" th:value="${book.isbn}" />
+            <button type="submit">Complete Purchase</button>
+        </form>
+    </div>
+</body>
+</html>
